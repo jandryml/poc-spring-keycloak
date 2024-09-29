@@ -13,22 +13,27 @@ import org.springframework.stereotype.Component
 @Component
 @Order(1)
 class OperationContextFilter(
-    private val operationContextHolder: OperationContextHolder
+    private val operationContext: OperationContext
 ) : Filter {
-    override fun doFilter(servletRequest: ServletRequest, servletResponse: ServletResponse, filterChain: FilterChain) {
-        println("in filter")
+
+    override fun doFilter(
+        servletRequest: ServletRequest,
+        servletResponse: ServletResponse,
+        filterChain: FilterChain
+    ) {
         val authentication = SecurityContextHolder.getContext().authentication
         if (authentication is JwtAuthenticationToken) {
-            val operationContext = createOperationContext(authentication.token)
-            operationContextHolder.setOperationContext(operationContext)
+            val user = parseUserFromJwtToken(authentication.token)
+            operationContext.setUser(user)
+//            operationContext.setUserIp(servletRequest.remoteAddr)
         }
         filterChain.doFilter(servletRequest, servletResponse)
     }
 
-    private fun createOperationContext(token: Jwt): OperationContext {
+    private fun parseUserFromJwtToken(token: Jwt): User {
         val authId = token.claims["sub"] as String
         val username = token.claims["username"] as String
         val email = token.claims["email"] as String
-        return OperationContext(authId, username, email)
+        return User(authId, username, email)
     }
 }
