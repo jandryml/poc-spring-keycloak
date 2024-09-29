@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: poc-spring-keycloak
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://keycloak:8080/realms/poc-realm
+          jwk-set-uri: http://keycloak:8080/realms/poc-realm/protocol/openid-connect/certs
