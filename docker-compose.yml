@@ -6,14 +6,12 @@ services:
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-    command: >
-      start-dev
-      --http-relative-path=/
+      KEYCLOAK_IMPORT: /opt/keycloak/data/import/realm-config.json
+    command: start-dev --import-realm
     ports:
       - "8081:8080"
     volumes:
-      - keycloak_data:/opt/keycloak/data
-
+      - ./keycloak/realm-config.json:/opt/keycloak/data/import/realm-config.json
   app:
     build: .
     depends_on:

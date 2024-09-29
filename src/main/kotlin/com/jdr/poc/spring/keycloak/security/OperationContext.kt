@@ -9,7 +9,6 @@ import org.springframework.web.context.WebApplicationContext
 @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
 class OperationContext {
     private var user: User? = null
-    
 
     fun setUser(user: User) {
         this.user = user

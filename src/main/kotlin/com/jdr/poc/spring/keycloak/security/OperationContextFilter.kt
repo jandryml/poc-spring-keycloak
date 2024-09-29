@@ -25,7 +25,6 @@ class OperationContextFilter(
         if (authentication is JwtAuthenticationToken) {
             val user = parseUserFromJwtToken(authentication.token)
             operationContext.setUser(user)
-//            operationContext.setUserIp(servletRequest.remoteAddr)
         }
         filterChain.doFilter(servletRequest, servletResponse)
     }
